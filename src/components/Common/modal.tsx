@@ -18,7 +18,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       />
       
       {/* Modal Content */}
-      <div className="relative z-50 bg-white rounded-3xl p-6 max-w-md w-full mx-4">
+      <div className="relative z-50 bg-stone-50 rounded-3xl shadow-sm max-h-[90vh] overflow-y-auto">
         {children}
       </div>
     </div>

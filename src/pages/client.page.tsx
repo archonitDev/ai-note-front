@@ -3,6 +3,8 @@ import { TabSection } from '../components/Client/tab-section';
 import { ConversationList } from '../components/Client/converstation-list';
 import { ClientInformation } from '../components/Client/client-information';
 import { ClientHeader } from '../components/Client/client-header';
+import NewRecordModal from '../components/new-record-popup';
+import RecordSuccessModal from '../components/record-success-popup';
 
 export const ClientPage = () => {
   const [activeTab, setActiveTab] = useState('conversations');
@@ -22,6 +24,8 @@ export const ClientPage = () => {
             <ClientInformation />
           )}
         </div>
+        <NewRecordModal isOpen={false} onClose={() => {}} />
+        <RecordSuccessModal isOpen={false} onClose={() => {}} onViewRecord={() => {}} onBackToRecords={() => {}} />
       </section>
     </div>
   );
