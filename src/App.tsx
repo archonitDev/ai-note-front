@@ -16,10 +16,10 @@ function App() {
             <Route path="/client" element={<ClientPage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/account-settings" element={<AccountSettingsPage />} />
+            <Route path="/conversation" element={<ConversationPage />} />
           </Route>
           
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/conversation" element={<ConversationPage />} />
           <Route path="/" element={<Navigate to="/main" replace />} />
           <Route path="*" element={<Navigate to="/main" replace />} />
         </Routes>
