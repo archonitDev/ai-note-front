@@ -2,7 +2,7 @@ import React from "react";
 
 export const ConversationsHeader: React.FC = () => {
   return (
-    <section className="flex relative flex-wrap gap-5 justify-between mt-8 w-full max-md:max-w-full">
+    <section className="flex relative flex-wrap gap-5 justify-between mt-8 w-full max-md:max-w-full my-5">
       <div className="flex gap-10">
         <button className="flex overflow-hidden gap-2.5 justify-center items-center self-start px-2.5 w-12 h-12 bg-white border border-solid border-[color:var(--Gray-4,#DFDFDF)] rounded-[40px]">
           <img
@@ -13,7 +13,7 @@ export const ConversationsHeader: React.FC = () => {
         </button>
         <h1 className="text-4xl text-neutral-900">Record 25 Jan, 2025</h1>
       </div>
-      <button className="flex overflow-hidden gap-2.5 items-center self-end py-2.5 pr-4 pl-3 mt-10 text-sm font-medium text-[#F58585] bg-white rounded-[40px]">
+      <button className="flex overflow-hidden gap-2.5 items-center self-end py-2.5 pr-4 pl-3 text-sm font-medium text-[#F58585] bg-white rounded-[40px]">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/22daf4b21d1d4b0a95de48f1bbb2282d/fb720748dd0cec02dfaf956bd40da76ee4abdb9e2cff26fe8dc92e8cc3b278da?placeholderIfAbsent=true"
           alt="Record"
