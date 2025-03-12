@@ -28,6 +28,12 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [summaryNote, setSummaryNote] = useState('');
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -58,6 +64,7 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
       .stop()
       .getMp3()
       .then(([buffer, blob]) => {
+        setAudioBlob(blob);
         const audioURL = URL.createObjectURL(blob);
         if (audioRef.current) {
           audioRef.current.src = audioURL;
@@ -105,11 +112,50 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
           });
         }
       })
-      .catch((e) => setIsPlaying(false));
+      .catch((e) => {
+        console.error('Recording failed:', e);
+        setIsPlaying(false);
+      });
   };
 
-  const handleFormSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    if (!audioBlob) {
+      alert('Please record audio before submitting');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'recording.mp3');
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('phoneNumber', phoneNumber);
+      formData.append('summaryNote', summaryNote);
+
+      const response = await fetch('/api/records', {  // Adjust the URL to match your backend endpoint
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit recording');
+      }
+
+      // Success! Close the modal or show success message
+      onClose();
+      // Optionally show success message
+      alert('Recording submitted successfully!');
+      
+    } catch (error) {
+      console.error('Error submitting recording:', error);
+      alert('Failed to submit recording. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handlePlayPause = () => {
@@ -204,12 +250,15 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
           </button>
         </header>
 
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className={`relative mb-5`}>
             <input
-              type={"text"}
-              placeholder={"Full Name"}
+              type="text"
+              placeholder="Full Name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="px-5 py-2.5 w-full text-2xl border-b border-solid border-[none] border-b-[#bfbfbf] border-b-opacity-50 h-[66px] text-neutral-900 bg-transparent text-opacity-80 max-sm:h-14 max-sm:text-xl"
+              required
             />
           </div>
           <div className="flex gap-4 mb-5 max-md:flex-col max-md:gap-5">
@@ -217,14 +266,20 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
               <input
                 type="email"
                 placeholder="E-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="px-5 py-2.5 w-full text-2xl border-b border-solid border-[none] border-b-[#bfbfbf] border-b-opacity-50 h-[66px] text-neutral-900 bg-transparent text-opacity-80 max-sm:h-14 max-sm:text-xl"
+                required
               />
             </div>
             <div className="relative mb-5 w-full">
               <input
                 type="tel"
                 placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 className="px-5 py-2.5 w-full text-2xl border-b border-solid border-[none] border-b-[#bfbfbf] border-b-opacity-50 h-[66px] text-neutral-900 bg-transparent text-opacity-80 max-sm:h-14 max-sm:text-xl"
+                required
               />
             </div>
           </div>
@@ -233,7 +288,10 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
             <input
               type="text"
               placeholder="Summary Note Type"
+              value={summaryNote}
+              onChange={(e) => setSummaryNote(e.target.value)}
               className="px-5 py-2.5 w-full text-2xl border-b border-solid border-[none] border-b-[#bfbfbf] border-b-opacity-50 h-[66px] text-neutral-900 bg-transparent text-opacity-80 max-sm:h-14 max-sm:text-xl"
+              required
             />
             <button
               type="button"
@@ -299,6 +357,18 @@ export const NewRecordModal: React.FC<NewRecordModalProps> = ({
               </button>
             )}
           </div>
+
+          {isRecorded && (
+            <div className="flex justify-end mt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="py-2.5 px-4 bg-blue-500 text-white rounded-[40px] hover:bg-blue-600 transition-colors disabled:bg-gray-400"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Recording'}
+              </button>
+            </div>
+          )}
         </form>
       </section>
     </Modal>
