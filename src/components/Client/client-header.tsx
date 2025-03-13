@@ -1,6 +1,12 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 export const ClientHeader: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
     <section className="flex relative flex-wrap gap-5 justify-between mt-8 w-full max-md:max-w-full">
       <div className="flex gap-10">
@@ -9,6 +15,7 @@ export const ClientHeader: React.FC = () => {
             src="https://cdn.builder.io/api/v1/image/assets/22daf4b21d1d4b0a95de48f1bbb2282d/c49f14e75b0f336bdd1f56e83eaddb0cb0a311e39ef5d30928661a82edb20b62?placeholderIfAbsent=true"
             alt="Back"
             className="object-contain self-stretch my-auto w-7 aspect-square"
+            onClick={handleBackClick}
           />
         </button>
         <h1 className="text-4xl text-neutral-900">MarkAnderson</h1>

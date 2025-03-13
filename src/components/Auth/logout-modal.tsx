@@ -10,7 +10,7 @@ interface LogoutModalProps {
 export const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose, onConfirm }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center">
+      <div className="text-center p-5">
         <h2 className="text-2xl font-bold text-neutral-900 mb-4">
           Logout Confirmation
         </h2>

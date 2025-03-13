@@ -1,10 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ConversationsHeader: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
   return (
     <section className="flex relative flex-wrap gap-5 justify-between mt-8 w-full max-md:max-w-full my-5">
       <div className="flex gap-10">
-        <button className="flex overflow-hidden gap-2.5 justify-center items-center self-start px-2.5 w-12 h-12 bg-white border border-solid border-[color:var(--Gray-4,#DFDFDF)] rounded-[40px]">
+        <button onClick={handleBackClick} className="flex overflow-hidden gap-2.5 justify-center items-center self-start px-2.5 w-12 h-12 bg-white border border-solid border-[color:var(--Gray-4,#DFDFDF)] rounded-[40px]">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/22daf4b21d1d4b0a95de48f1bbb2282d/c49f14e75b0f336bdd1f56e83eaddb0cb0a311e39ef5d30928661a82edb20b62?placeholderIfAbsent=true"
             alt="Back"
